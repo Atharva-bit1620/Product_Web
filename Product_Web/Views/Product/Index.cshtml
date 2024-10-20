@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Product_Web.Models.Product>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <style>
+        .container {
+            margin-top: 50px;
+        }
+
+        .table th, .table td {
+            text-align: center;
+        }
+
+        .btn i {
+            margin-right: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Products List</h2>
+        <a asp-action="AddProduct" class="btn btn-primary mb-3" title="Add Product">
+            <i class="fas fa-plus"></i> Add Product
+        </a>
+        <table class="table table-bordered">
+            <thead class="thead-light">
+                <tr>
+                    <th>SN</th>
+                    <th>Product Name</th>
+                    <th>Description</th>
+                    <th>Created</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    <tr>
+                        <td>@(i + 1)</td>
+                        <td>@Model.ElementAt(i).ProductName</td>
+                        <td>@Model.ElementAt(i).Description</td>
+                        <td>@Model.ElementAt(i).Created.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@Model.ElementAt(i).Id" class="btn btn-secondary" title="View Details">
+                                <i class="fas fa-info-circle"></i>
+                            </a>
+                            <a asp-action="EditProduct" asp-route-id="@Model.ElementAt(i).Id" class="btn btn-info" title="Edit Product">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a asp-action="DeleteProduct" asp-route-id="@Model.ElementAt(i).Id" class="btn btn-danger" title="Delete Product">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="5">No products available.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.btn-danger').on('click', function () {
+                return confirm('Are you sure you want to delete this product?');
+            });
+        });
+    </script>
+</body>
+</html>
